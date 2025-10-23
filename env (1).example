@@ -1,0 +1,12 @@
+# API Security
+API_KEY=change-me-to-a-secure-random-key
+
+# Supabase Configuration
+# Get these from your Supabase project: Settings → API
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_KEY=your-anon-public-key-here
+SUPABASE_BUCKET=renders
+
+# Server Configuration
+PORT=8080
+NODE_ENV=production
