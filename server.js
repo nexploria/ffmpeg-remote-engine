@@ -35,11 +35,19 @@ app.use(morgan("tiny"));
 app.use(express.json({ limit: "10mb" }));
 
 // === Vérification de la clé API (optionnelle) ===
-app.use((req, res, next) => { 
-  const k = req.get("x-api-key") || req.get("authorization")?.replace("Bearer ", "");
-  if (!API_KEY || k === API_KEY) return next(); 
-  res.status(401).json({ ok: false, error: "unauthorized" }); 
+// On laisse /health accessible sans clé pour pouvoir tester facilement le serveur.
+app.use((req, res, next) => {
+  if (req.path === "/health") {
+    return next();
+  }
+
+  if (API_KEY && req.headers["x-api-key"] !== API_KEY) {
+    return res.status(401).json({ ok: false, error: "unauthorized" });
+  }
+
+  next();
 });
+
 
 // === Fonction FFmpeg ===
 function runFFmpeg(args, cwd) {
